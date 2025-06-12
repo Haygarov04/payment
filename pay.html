@@ -2,87 +2,181 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Buy My Photo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Payment Page</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
       margin: 0;
-      padding: 0;
     }
-
+ 
     .container {
-      max-width: 500px;
-      background: #fff;
-      margin: 50px auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
     }
-
-    h2 {
-      text-align: center;
-      color: #333;
+ 
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
-
+ 
     label {
+      font-size: 14px;
+      margin-bottom: 5px;
       display: block;
-      margin-top: 15px;
-      font-weight: bold;
     }
-
-    input {
+ 
+    input, select {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
+      font-size: 14px;
+      margin-bottom: 16px;
       border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
-
-    button {
+ 
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+ 
+    .row input {
       width: 100%;
-      background-color: #28a745;
+    }
+ 
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+ 
+    .checkbox-label input {
+      margin-right: 8px;
+    }
+ 
+    .pay-button {
+      background-color: #2f2f4f;
       color: white;
-      padding: 15px;
-      font-size: 16px;
+      font-weight: 600;
       border: none;
-      border-radius: 5px;
-      margin-top: 25px;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
       cursor: pointer;
     }
-
-    button:hover {
-      background-color: #218838;
+ 
+    .card-icons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 4px;
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
-
-    .price {
-      text-align: center;
-      font-size: 18px;
-      margin-bottom: 20px;
-      color: #555;
+ 
+    .card-icons img {
+      height: 20px;
+    }
+ 
+    a {
+      font-size: 12px;
+      color: #666;
+      text-decoration: underline;
+    }
+ 
+    @media (max-width: 480px) {
+      body {
+        padding: 20px;
+      }
+ 
+      .container {
+        padding: 20px;
+      }
+ 
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
+ 
+      .row input {
+        margin-bottom: 16px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Buy My Photo</h2>
-    <div class="price">Price: $5.00</div>
+    <form method="POST" action="/process-order">
+      <h3>Delivery information</h3>
 
-    <form method="POST" action="/">
-      <label for="cardname">Cardholder Name</label>
-      <input type="text" id="cardname" name="cardname" required>
+      <label for="email">Email</label>
+      <input type="email" name="email" placeholder="Email for receiving photos" required>
 
-      <label for="cardnumber">Card Number</label>
-      <input type="text" id="cardnumber" name="cardnumber" maxlength="19" required>
+      <label for="address">Shipping address</label>
+      <input type="text" name="address" placeholder="Address" required>
+      <input type="text" name="city" placeholder="City and Region" required>
+      <input type="text" name="zip" placeholder="Zip code" required>
 
-      <label for="expdate">Expiration Date (MM/YY)</label>
-      <input type="text" id="expdate" name="expdate" required>
+      <a href="#">Enter address manually</a>
 
-      <label for="cvv">CVV</label>
-      <input type="password" id="cvv" name="cvv" maxlength="4" required>
+      <h3>Payment details</h3>
 
-      <button type="submit">Buy Now</button>
+      <label for="cardname">Name on card</label>
+      <input type="text" name="cardname" placeholder="Name" required>
+      <input type="text" name="cardnumber" placeholder="1234 1234 1234 1234" required>
+
+      <div class="row">
+       <input type="text" name="expdate" id="expdate" placeholder="MM / YY" maxlength="7" required>
+
+<script>
+  const expInput = document.getElementById("expdate");
+
+  expInput.addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, ""); 
+    if (value.length >= 3) {
+      value = value.slice(0, 2) + " / " + value.slice(2, 4);
+    }
+    e.target.value = value;
+  });
+</script>
+
+        <input type="text" name="cvv" placeholder="CVC" required>
+      </div>
+
+      <div class="card-icons">
+        <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
+        <img src="https://img.icons8.com/color/48/mastercard.png" alt="MasterCard">
+        <img src="https://img.icons8.com/color/48/amex.png" alt="Amex">
+        <img src="https://img.icons8.com/color/48/jcb.png" alt="JCB">
+      </div>
+
+      <div class="checkbox-label">
+        
+        <label>Save Card</label>
+        <input type="checkbox" name="samebilling">
+        <label>Billing address is same as shipping</label>
+      </div>
+
+      <button type="submit" class="pay-button">Pay €5.00</button>
     </form>
   </div>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function(e) {
+      alert("Payment is being processed...");
+    });
+  </script>
 </body>
+
 </html>
